@@ -11,37 +11,45 @@ import {
   Box,
 } from '@mui/material';
 import { motion } from 'framer-motion';
+import { CloudUpload } from '@mui/icons-material';
 
 function ResourceLibrary() {
   const [resources, setResources] = useState([]);
   const [newResource, setNewResource] = useState('');
 
   const handleUpload = () => {
-    // TODO: Upload to backend
     if (newResource.trim()) {
-      setResources([...resources, { id: resources.length + 1, title: newResource }]);
+      setResources([...resources, { id: resources.length + 1, title: newResource, uploader: 'You', timestamp: new Date().toLocaleTimeString() }]);
       setNewResource('');
     }
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        mb: 4,
+        background: '#1A1A2E', // Night theme base
+        minHeight: '100vh',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #4caf50, #81c784)',
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches Navbar
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             textAlign: 'center',
             mb: 4,
+            textShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
           }}
         >
           Resource Library
@@ -51,10 +59,12 @@ function ResourceLibrary() {
         <Card
           sx={{
             borderRadius: 3,
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
             mb: 4,
-            background: 'linear-gradient(135deg, #f5f5f5, #ffffff)',
+            background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+            border: '1px solid rgba(107, 72, 255, 0.2)',
             p: 3,
+            '&:hover': { borderColor: '#00D4FF' },
           }}
         >
           <CardContent>
@@ -75,27 +85,31 @@ function ResourceLibrary() {
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 2,
-                    '&:hover fieldset': { borderColor: '#4caf50' },
-                    '&.Mui-focused fieldset': { borderColor: '#ff9800' },
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    '& fieldset': { borderColor: 'rgba(107, 72, 255, 0.3)' },
+                    '&:hover fieldset': { borderColor: '#00D4FF' },
+                    '&.Mui-focused fieldset': { borderColor: '#6B48FF' },
                   },
+                  '& .MuiInputLabel-root': { color: '#A0AEC0' },
+                  '& .MuiInputBase-input': { color: '#E2E8F0' },
                 }}
               />
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="contained"
-                  color="secondary"
                   onClick={handleUpload}
                   sx={{
-                    background: '#ff9800',
-                    '&:hover': { background: '#f57c00' },
+                    background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Theme gradient
+                    '&:hover': { boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' },
                     borderRadius: 2,
                     py: 1.5,
                     px: 4,
                     fontWeight: 'bold',
+                    color: '#E2E8F0',
                     minWidth: { sm: '150px' },
                   }}
                 >
-                  Upload
+                  <CloudUpload sx={{ mr: 1 }} /> Upload
                 </Button>
               </motion.div>
             </Box>
@@ -117,12 +131,12 @@ function ResourceLibrary() {
                   <Card
                     sx={{
                       borderRadius: 3,
-                      boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                      background: 'white',
-                      border: '2px solid #e0e0e0',
+                      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
+                      background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+                      border: '2px solid rgba(107, 72, 255, 0.2)',
                       '&:hover': {
-                        borderColor: '#4caf50',
-                        boxShadow: '0 12px 24px rgba(0,0,0,0.3)',
+                        borderColor: '#00D4FF',
+                        boxShadow: '0 12px 24px rgba(0, 212, 255, 0.2)',
                       },
                       height: '100%',
                     }}
@@ -131,15 +145,18 @@ function ResourceLibrary() {
                       <Typography
                         variant="h6"
                         sx={{
-                          color: '#4caf50',
+                          color: '#00D4FF', // Cyan title
                           fontWeight: 'bold',
                           mb: 1,
                         }}
                       >
                         {resource.title}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: '#757575' }}>
-                        Uploaded by You
+                      <Typography variant="body2" sx={{ color: '#A0AEC0', mb: 1 }}>
+                        Uploaded by {resource.uploader}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: '#A0AEC0', opacity: 0.7 }}>
+                        {resource.timestamp}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -151,7 +168,7 @@ function ResourceLibrary() {
               <Typography
                 sx={{
                   textAlign: 'center',
-                  color: '#757575',
+                  color: '#A0AEC0',
                   fontStyle: 'italic',
                   mt: 2,
                 }}

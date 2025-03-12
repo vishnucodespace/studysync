@@ -15,7 +15,6 @@ function StudyGroups() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch groups from backend
     setGroups([
       { id: 1, name: 'CS Study Group', description: 'For computer science students.' },
       { id: 2, name: 'Math Club', description: 'Math enthusiasts unite!' },
@@ -23,7 +22,15 @@ function StudyGroups() {
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        mb: 4,
+        background: '#1A1A2E', // Night theme base
+        minHeight: '100vh',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,12 +40,13 @@ function StudyGroups() {
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #4caf50, #81c784)',
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches Navbar
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             textAlign: 'center',
             mb: 4,
+            textShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
           }}
         >
           Study Groups
@@ -57,12 +65,12 @@ function StudyGroups() {
                 <Card
                   sx={{
                     borderRadius: 3,
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                    background: 'white',
-                    border: '2px solid #e0e0e0',
+                    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
+                    background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+                    border: '2px solid rgba(107, 72, 255, 0.2)',
                     '&:hover': {
-                      borderColor: '#4caf50',
-                      boxShadow: '0 12px 24px rgba(0,0,0,0.3)',
+                      borderColor: '#00D4FF', // Cyan on hover
+                      boxShadow: '0 12px 24px rgba(0, 212, 255, 0.2)',
                     },
                     height: '100%',
                     display: 'flex',
@@ -73,7 +81,7 @@ function StudyGroups() {
                     <Typography
                       variant="h6"
                       sx={{
-                        color: '#4caf50',
+                        color: '#00D4FF', // Cyan for night theme
                         fontWeight: 'bold',
                         mb: 1,
                       }}
@@ -83,7 +91,7 @@ function StudyGroups() {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: '#757575',
+                        color: '#A0AEC0', // Secondary text
                         mb: 2,
                       }}
                     >
@@ -94,14 +102,14 @@ function StudyGroups() {
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="contained"
-                        color="secondary"
                         sx={{
-                          background: '#ff9800',
-                          '&:hover': { background: '#f57c00' },
+                          background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches theme
+                          '&:hover': { boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' },
                           borderRadius: 2,
                           py: 1,
                           px: 3,
                           fontWeight: 'bold',
+                          color: '#E2E8F0',
                         }}
                       >
                         Join Group

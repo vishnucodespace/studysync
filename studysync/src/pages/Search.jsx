@@ -1,3 +1,4 @@
+// src/pages/Search.jsx
 import React, { useState } from 'react';
 import {
   Container,
@@ -10,44 +11,54 @@ import {
   Grid,
 } from '@mui/material';
 import { motion } from 'framer-motion';
+import { Search as SearchIcon } from '@mui/icons-material';
 
 function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
   const handleSearch = () => {
-    // TODO: Implement search logic with backend
     console.log('Searching for:', query);
-    // Mock results for now
-    setResults([
-      { id: 1, type: 'user', name: 'Jane Smith', detail: 'CS Student' },
-      { id: 2, type: 'group', name: 'CS Study Group', detail: 'Computer Science Enthusiasts' },
-      { id: 3, type: 'job', name: 'Software Intern', detail: 'TechCorp' },
-    ]);
+    if (query.trim()) {
+      setResults([
+        { id: 1, type: 'user', name: 'Jane Smith', detail: 'CS Student' },
+        { id: 2, type: 'group', name: 'CS Study Group', detail: 'Computer Science Enthusiasts' },
+        { id: 3, type: 'job', name: 'Software Intern', detail: 'TechCorp' },
+      ]);
+    } else {
+      setResults([]);
+    }
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 4,
+        mb: 4,
+        background: '#1A1A2E', // Night theme base
+        minHeight: '100vh',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #4caf50, #81c784)',
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches Navbar
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             textAlign: 'center',
             mb: 4,
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            textShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
           }}
         >
-          Search StudySync
+          Search CampusConnect
         </Typography>
 
         {/* Search Bar */}
@@ -57,13 +68,13 @@ function Search() {
             flexDirection: { xs: 'column', sm: 'row' },
             gap: 2,
             alignItems: 'center',
-            background: 'white',
+            background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
             borderRadius: 3,
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
             p: 2,
             mb: 4,
-            border: '2px solid #e0e0e0',
-            '&:hover': { borderColor: '#4caf50' },
+            border: '2px solid rgba(107, 72, 255, 0.2)',
+            '&:hover': { borderColor: '#00D4FF' },
           }}
         >
           <TextField
@@ -75,28 +86,32 @@ function Search() {
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
-                '&:hover fieldset': { borderColor: '#4caf50' },
-                '&.Mui-focused fieldset': { borderColor: '#ff9800' },
+                background: 'rgba(255, 255, 255, 0.05)',
+                '& fieldset': { borderColor: 'rgba(107, 72, 255, 0.3)' },
+                '&:hover fieldset': { borderColor: '#00D4FF' },
+                '&.Mui-focused fieldset': { borderColor: '#6B48FF' },
               },
+              '& .MuiInputLabel-root': { color: '#A0AEC0' },
+              '& .MuiInputBase-input': { color: '#E2E8F0' },
             }}
           />
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               variant="contained"
-              color="secondary"
               onClick={handleSearch}
               sx={{
-                background: '#ff9800',
-                '&:hover': { background: '#f57c00' },
+                background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Theme gradient
+                '&:hover': { boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' },
                 borderRadius: 2,
                 py: 1.5,
                 px: 4,
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
+                color: '#E2E8F0',
                 minWidth: { sm: '150px' },
               }}
             >
-              Search
+              <SearchIcon sx={{ mr: 1 }} /> Search
             </Button>
           </motion.div>
         </Box>
@@ -114,12 +129,12 @@ function Search() {
                   <Card
                     sx={{
                       borderRadius: 3,
-                      boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                      background: 'white',
-                      border: '2px solid #e0e0e0',
+                      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
+                      background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+                      border: '2px solid rgba(107, 72, 255, 0.2)',
                       '&:hover': {
-                        borderColor: '#4caf50',
-                        boxShadow: '0 12px 24px rgba(0,0,0,0.3)',
+                        borderColor: '#00D4FF',
+                        boxShadow: '0 12px 24px rgba(0, 212, 255, 0.2)',
                       },
                     }}
                   >
@@ -127,19 +142,19 @@ function Search() {
                       <Typography
                         variant="h6"
                         sx={{
-                          color: '#4caf50',
+                          color: '#00D4FF', // Cyan title
                           fontWeight: 'bold',
                           mb: 1,
                         }}
                       >
                         {result.name}
                       </Typography>
-                      <Typography sx={{ color: '#757575' }}>
+                      <Typography sx={{ color: '#A0AEC0' }}>
                         {result.detail}
                       </Typography>
                       <Typography
                         variant="caption"
-                        sx={{ color: '#ff9800', fontStyle: 'italic' }}
+                        sx={{ color: '#6B48FF', fontStyle: 'italic' }}
                       >
                         {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
                       </Typography>
@@ -151,7 +166,7 @@ function Search() {
           </Grid>
         )}
         {query && results.length === 0 && (
-          <Typography sx={{ textAlign: 'center', color: '#757575', mt: 2 }}>
+          <Typography sx={{ textAlign: 'center', color: '#A0AEC0', mt: 2 }}>
             No results found for "{query}".
           </Typography>
         )}

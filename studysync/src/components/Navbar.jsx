@@ -1,17 +1,15 @@
 // src/components/Navbar.jsx
 import React from 'react';
-import { AppBar, Toolbar, Typography, Switch, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-function Navbar({ darkMode, toggleDarkMode }) {
+function Navbar() {
   return (
     <AppBar
       position="static"
       sx={{
-        background: darkMode
-          ? 'linear-gradient(45deg, #6B48FF, #00D4FF)'
-          : 'linear-gradient(45deg, #FF6F61, #6B48FF)',
+        background: 'linear-gradient(45deg, #6B48FF, #00D4FF)',
         boxShadow: '0 0 20px rgba(107, 72, 255, 0.5)',
         borderRadius: '0 0 16px 16px',
       }}
@@ -23,10 +21,10 @@ function Navbar({ darkMode, toggleDarkMode }) {
           to="/"
           sx={{ flexGrow: 1, color: '#FFFFFF', textDecoration: 'none', fontWeight: 'bold' }}
         >
-          CampusConnect
+          StudySync
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          {['dashboard', 'profile', 'messages', 'groups', 'resources', 'events', 'jobs'].map((route) => (
+          {['dashboard', 'profile', 'messages', 'groups', 'resources', 'events', 'jobs', 'search', 'notifications'].map((route) => (
             <motion.div key={route} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Typography
                 component={Link}
@@ -41,7 +39,6 @@ function Navbar({ darkMode, toggleDarkMode }) {
               </Typography>
             </motion.div>
           ))}
-          <Switch checked={darkMode} onChange={toggleDarkMode} color="default" />
         </Box>
       </Toolbar>
     </AppBar>

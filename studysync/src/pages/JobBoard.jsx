@@ -16,7 +16,6 @@ function JobBoard() {
   const [expandedJob, setExpandedJob] = useState(null);
 
   useEffect(() => {
-    // TODO: Fetch jobs from backend
     setJobs([
       { id: 1, title: 'Software Engineer Intern', company: 'TechCorp', description: 'Work on cutting-edge projects.' },
       { id: 2, title: 'Data Analyst', company: 'DataInc', description: 'Analyze data for insights.' },
@@ -28,36 +27,43 @@ function JobBoard() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        mb: 4,
+        background: '#1A1A2E', // Night theme base
+        minHeight: '100vh',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #ff9800, #f57c00)', // Orange gradient for contrast
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Sync with Navbar
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             textAlign: 'center',
             mb: 4,
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
           }}
         >
           Job Board
         </Typography>
 
-        {/* Job List */}
         <Box
           sx={{
-            background: 'linear-gradient(135deg, #2e2e2e, #424242)', // Dark gradient
+            background: 'linear-gradient(135deg, #1A1A2E, #16213E)', // Matches Dashboard
             borderRadius: 3,
-            boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
+            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
             p: 2,
+            border: '1px solid rgba(107, 72, 255, 0.2)',
           }}
         >
           {jobs.map((job) => (
@@ -69,13 +75,13 @@ function JobBoard() {
             >
               <Card
                 sx={{
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'rgba(34, 34, 54, 0.9)', // Glassy night card
                   borderRadius: 2,
                   mb: 1,
-                  border: '1px solid #616161',
+                  border: '1px solid rgba(107, 72, 255, 0.2)', // Subtle purple
                   '&:hover': {
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    borderColor: '#4caf50',
+                    background: 'rgba(107, 72, 255, 0.1)',
+                    borderColor: '#00D4FF', // Cyan on hover
                   },
                 }}
               >
@@ -94,13 +100,13 @@ function JobBoard() {
                     <Typography
                       variant="h6"
                       sx={{
-                        color: '#4caf50',
+                        color: '#00D4FF', // Cyan for night theme
                         fontWeight: 'bold',
                       }}
                     >
                       {job.title}
                     </Typography>
-                    <Typography sx={{ color: '#ffffff', opacity: 0.9 }}>
+                    <Typography sx={{ color: '#E2E8F0', opacity: 0.9 }}>
                       {job.company}
                     </Typography>
                   </Box>
@@ -108,8 +114,8 @@ function JobBoard() {
                     <Button
                       variant="contained"
                       sx={{
-                        background: '#ff9800',
-                        '&:hover': { background: '#f57c00' },
+                        background: '#6B48FF', // Purple base
+                        '&:hover': { background: '#00D4FF' }, // Cyan hover
                         borderRadius: 2,
                         px: 3,
                         py: 1,
@@ -122,10 +128,16 @@ function JobBoard() {
                     </Button>
                   </motion.div>
                 </CardContent>
-                {/* Expandable Details */}
                 <Collapse in={expandedJob === job.id}>
-                  <Box sx={{ p: 2, background: 'rgba(0, 0, 0, 0.2)', borderRadius: '0 0 8px 8px' }}>
-                    <Typography sx={{ color: '#ffffff', opacity: 0.8 }}>
+                  <Box
+                    sx={{
+                      p: 2,
+                      background: 'rgba(26, 26, 46, 0.9)', // Slightly darker for depth
+                      borderRadius: '0 0 8px 8px',
+                      borderTop: '1px solid rgba(107, 72, 255, 0.2)',
+                    }}
+                  >
+                    <Typography sx={{ color: '#A0AEC0', opacity: 0.8 }}>
                       {job.description}
                     </Typography>
                   </Box>

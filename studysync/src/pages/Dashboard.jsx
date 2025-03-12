@@ -1,5 +1,6 @@
-// src/pages/Dashboard.jsx (Updated Styling)
+// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -7,15 +8,16 @@ import {
   Card,
   CardContent,
   Button,
-  TextField,
   Avatar,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SearchBar from '../components/SearchBar'; // Adjust path as necessary
 
-function Dashboard({ darkMode }) {
+function Dashboard() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
@@ -40,14 +42,16 @@ function Dashboard({ darkMode }) {
     ]);
   }, []);
 
+  const handleSearch = (query) => {
+    navigate(`/search?query=${encodeURIComponent(query)}`);
+  };
+
   return (
     <Container
       maxWidth={false}
       disableGutters
       sx={{
-        background: darkMode
-          ? 'linear-gradient(135deg, #1A1A2E, #16213E)'
-          : 'linear-gradient(135deg, #F7F9FC, #EDEFF1)',
+        background: 'linear-gradient(135deg, #1A1A2E, #16213E)',
         minHeight: '100vh',
         p: 3,
       }}
@@ -59,9 +63,7 @@ function Dashboard({ darkMode }) {
             <Card
               sx={{
                 mb: 3,
-                background: darkMode
-                  ? 'linear-gradient(45deg, #6B48FF, #00D4FF)'
-                  : 'linear-gradient(45deg, #FF6F61, #6B48FF)',
+                background: 'linear-gradient(45deg, #6B48FF, #00D4FF)',
               }}
             >
               <CardContent>
@@ -103,8 +105,8 @@ function Dashboard({ darkMode }) {
                     fullWidth
                     sx={{
                       mb: 1,
-                      background: darkMode ? '#6B48FF' : '#FF6F61',
-                      '&:hover': { background: darkMode ? '#00D4FF' : '#6B48FF' },
+                      background: '#6B48FF',
+                      '&:hover': { background: '#00D4FF' },
                     }}
                     component={Link}
                     to={`/${link}`}
@@ -117,25 +119,14 @@ function Dashboard({ darkMode }) {
           </motion.div>
         </Grid>
 
-        {/* Main Content */}
+        {/* Main Content Area */}
         <Grid item xs={12} md={6}>
           <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <TextField
-              label="Search CampusConnect..."
-              variant="outlined"
-              fullWidth
-              sx={{
-                mb: 3,
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: '12px',
-                  background: darkMode ? 'rgba(255, 255, 255, 0.05)' : '#FFFFFF',
-                },
-              }}
-            />
+            <SearchBar onSearch={handleSearch} />
             <Typography
               variant="h5"
               gutterBottom
-              sx={{ color: darkMode ? '#00D4FF' : '#FF6F61', fontWeight: 'bold' }}
+              sx={{ color: '#00D4FF', fontWeight: 'bold', mt: 3 }}
             >
               News Feed
             </Typography>
@@ -169,7 +160,7 @@ function Dashboard({ darkMode }) {
             ].map((section, idx) => (
               <Card key={idx} sx={{ mb: 3 }}>
                 <CardContent>
-                  <Typography variant="h6" sx={{ color: darkMode ? '#00D4FF' : '#FF6F61' }}>
+                  <Typography variant="h6" sx={{ color: '#00D4FF' }}>
                     {section.title}
                   </Typography>
                   {section.data.map((item) => (
@@ -181,7 +172,7 @@ function Dashboard({ darkMode }) {
                     component={Link}
                     to={section.link}
                     size="small"
-                    sx={{ color: darkMode ? '#00D4FF' : '#FF6F61' }}
+                    sx={{ color: '#00D4FF' }}
                   >
                     See All
                   </Button>

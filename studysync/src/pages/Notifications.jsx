@@ -9,12 +9,12 @@ import {
   Link,
 } from '@mui/material';
 import { motion } from 'framer-motion';
+import { Visibility } from '@mui/icons-material';
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch notifications from backend
     setNotifications([
       { id: 1, message: 'Jane liked your post.', timestamp: '5 mins ago', type: 'like' },
       { id: 2, message: 'New event added: College Fest.', timestamp: '1 hr ago', type: 'event' },
@@ -22,30 +22,36 @@ function Notifications() {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 4,
+        mb: 4,
+        background: '#1A1A2E', // Night theme base
+        minHeight: '100vh',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <Typography
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #4caf50, #81c784)',
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches Navbar
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
             textAlign: 'center',
             mb: 4,
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            textShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
           }}
         >
           Notifications
         </Typography>
 
-        {/* Notification List */}
         <Box>
           {notifications.map((notification) => (
             <motion.div
@@ -58,49 +64,55 @@ function Notifications() {
               <Card
                 sx={{
                   borderRadius: 3,
-                  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                  background: 'white',
-                  border: '2px solid #e0e0e0',
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
+                  background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+                  border: '2px solid rgba(107, 72, 255, 0.2)',
                   mb: 2,
                   '&:hover': {
-                    borderColor: '#4caf50',
-                    boxShadow: '0 12px 24px rgba(0,0,0,0.3)',
+                    borderColor: '#00D4FF',
+                    boxShadow: '0 12px 24px rgba(0, 212, 255, 0.2)',
                   },
                 }}
               >
-                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <CardContent
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
                   <Box>
                     <Typography
                       sx={{
-                        color: '#4caf50',
+                        color: '#00D4FF', // Cyan text
                         fontWeight: 'bold',
                         mb: 0.5,
                       }}
                     >
                       {notification.message}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: '#757575' }}>
+                    <Typography variant="caption" sx={{ color: '#A0AEC0' }}>
                       {notification.timestamp}
                     </Typography>
                   </Box>
                   <Link
                     component="button"
                     sx={{
-                      color: '#ff9800',
+                      color: '#6B48FF', // Purple link
                       fontWeight: 'bold',
                       textDecoration: 'none',
-                      '&:hover': { textDecoration: 'underline' },
+                      '&:hover': { color: '#00D4FF', textDecoration: 'underline' },
                     }}
-                    onClick={() => console.log(`View ${notification.type}: ${notification.id}`)} // Placeholder
+                    onClick={() => console.log(`View ${notification.type}: ${notification.id}`)}
                   >
-                    View
+                    <Visibility sx={{ mr: 0.5, verticalAlign: 'middle' }} /> View
                   </Link>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
           {notifications.length === 0 && (
-            <Typography sx={{ textAlign: 'center', color: '#757575', mt: 2 }}>
+            <Typography sx={{ textAlign: 'center', color: '#A0AEC0', mt: 2 }}>
               No notifications yet.
             </Typography>
           )}

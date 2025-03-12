@@ -1,18 +1,15 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#4caf50' }, // Green
-    secondary: { main: '#ff9800' }, // Orange
-  },
-});
+import { AuthProvider } from './contexts/AuthContext';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>,
+  <BrowserRouter>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
