@@ -1,4 +1,3 @@
-// src/pages/Notifications.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -10,15 +9,25 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Visibility } from '@mui/icons-material';
+import apiCall from '../utils/api';
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    setNotifications([
-      { id: 1, message: 'Jane liked your post.', timestamp: '5 mins ago', type: 'like' },
-      { id: 2, message: 'New event added: College Fest.', timestamp: '1 hr ago', type: 'event' },
-    ]);
+    const fetchNotifications = async () => {
+      try {
+        const data = await apiCall('/api/notifications');
+        setNotifications(data);
+      } catch (error) {
+        console.error('Failed to fetch notifications:', error);
+        setNotifications([
+          { id: 1, message: 'Jane liked your post.', timestamp: '5 mins ago', type: 'like' },
+          { id: 2, message: 'New event added: College Fest.', timestamp: '1 hr ago', type: 'event' },
+        ]);
+      }
+    };
+    fetchNotifications();
   }, []);
 
   return (
@@ -27,7 +36,7 @@ function Notifications() {
       sx={{
         mt: 4,
         mb: 4,
-        background: '#1A1A2E', // Night theme base
+        background: '#1A1A2E',
         minHeight: '100vh',
       }}
     >
@@ -40,7 +49,7 @@ function Notifications() {
           variant="h4"
           gutterBottom
           sx={{
-            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)', // Matches Navbar
+            background: 'linear-gradient(45deg, #6B48FF, #00D4FF)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold',
@@ -55,17 +64,17 @@ function Notifications() {
         <Box>
           {notifications.map((notification) => (
             <motion.div
-              key={notification.id}
+              key={notification._id || notification.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: notification.id * 0.1 }}
+              transition={{ duration: 0.3, delay: (notification._id || notification.id) * 0.1 }}
               whileHover={{ scale: 1.02 }}
             >
               <Card
                 sx={{
                   borderRadius: 3,
                   boxShadow: '0 8px 16px rgba(0, 0, 0, 0.4)',
-                  background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))', // Glassy night
+                  background: 'linear-gradient(135deg, rgba(34, 34, 54, 0.9), rgba(107, 72, 255, 0.3))',
                   border: '2px solid rgba(107, 72, 255, 0.2)',
                   mb: 2,
                   '&:hover': {
@@ -84,7 +93,7 @@ function Notifications() {
                   <Box>
                     <Typography
                       sx={{
-                        color: '#00D4FF', // Cyan text
+                        color: '#00D4FF',
                         fontWeight: 'bold',
                         mb: 0.5,
                       }}
@@ -98,12 +107,12 @@ function Notifications() {
                   <Link
                     component="button"
                     sx={{
-                      color: '#6B48FF', // Purple link
+                      color: '#6B48FF',
                       fontWeight: 'bold',
                       textDecoration: 'none',
                       '&:hover': { color: '#00D4FF', textDecoration: 'underline' },
                     }}
-                    onClick={() => console.log(`View ${notification.type}: ${notification.id}`)}
+                    onClick={() => console.log(`View ${notification.type}: ${notification._id || notification.id}`)}
                   >
                     <Visibility sx={{ mr: 0.5, verticalAlign: 'middle' }} /> View
                   </Link>

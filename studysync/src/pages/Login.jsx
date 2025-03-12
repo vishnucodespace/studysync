@@ -9,7 +9,8 @@ import {
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Login as LoginIcon } from '@mui/icons-material';
-import { useAuth } from '../contexts/AuthContext'; // Path is correct assuming src/pages/ to src/contexts/
+import { useAuth } from '../contexts/AuthContext';
+import apiCall from '../utils/api';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -18,18 +19,15 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    // Simulate frontend-only authentication
-    if (email && password) {
-      // Mock successful login
-      localStorage.setItem('token', 'mock-token'); // Simulate storing a token
-      login(); // Update AuthContext's isAuthenticated to true
-      navigate('/dashboard'); // Redirect to dashboard
-    } else {
-      setError('Please enter both email and password');
+    try {
+      const data = await apiCall('/api/auth/login', 'POST', { email, password });
+      login(data.token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Invalid credentials');
     }
   };
 

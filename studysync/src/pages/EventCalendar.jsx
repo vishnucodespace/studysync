@@ -1,16 +1,67 @@
-// src/pages/EventCalendar.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Typography, Box } from '@mui/material';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { motion } from 'framer-motion';
+import apiCall from '../utils/api';
+
+// Demo events data
+const demoEvents = [
+  {
+    title: 'College Fest',
+    date: '2025-03-15',
+    backgroundColor: '#6B48FF',
+    borderColor: '#5A3ECC',
+  },
+  {
+    title: 'Workshop: AI Basics',
+    date: '2025-03-20',
+    backgroundColor: '#00D4FF',
+    borderColor: '#00B8E6',
+  },
+  {
+    title: 'Hackathon',
+    date: '2025-03-25',
+    backgroundColor: '#6B48FF',
+    borderColor: '#5A3ECC',
+  },
+  {
+    title: 'Guest Lecture',
+    date: '2025-03-18',
+    backgroundColor: '#FF6B6B',
+    borderColor: '#E65A5A',
+  },
+  {
+    title: 'Team Meeting',
+    date: '2025-03-22',
+    backgroundColor: '#00D4FF',
+    borderColor: '#00B8E6',
+  },
+];
 
 function EventCalendar() {
-  const events = [
-    { title: 'College Fest', date: '2025-03-15', backgroundColor: '#6B48FF', borderColor: '#5A3ECC' },
-    { title: 'Workshop', date: '2025-03-20', backgroundColor: '#00D4FF', borderColor: '#00B8E6' },
-    { title: 'Hackathon', date: '2025-03-25', backgroundColor: '#6B48FF', borderColor: '#5A3ECC' },
-  ];
+  const [events, setEvents] = useState(demoEvents); // Initialize with demo data
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await apiCall('/api/events');
+        setEvents(
+          data.map(event => ({
+            title: event.title,
+            date: event.date,
+            backgroundColor: '#6B48FF', // Default color if not provided by API
+            borderColor: '#5A3ECC',
+          }))
+        );
+      } catch (error) {
+        console.error('Failed to fetch events:', error);
+        // Fallback to demo events if API fails
+        setEvents(demoEvents);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4, background: '#1A1A2E', minHeight: '100vh' }}>
@@ -65,14 +116,12 @@ function EventCalendar() {
             dayCellContent={({ date }) => (
               <Typography sx={{ color: '#E2E8F0', fontSize: '1rem' }}>{date.getDate()}</Typography>
             )}
-            // Custom styles for the calendar table
             customButtons={{
               prev: { text: '◄', click: (e) => e.currentTarget.parentElement.parentElement.querySelector('.fc-prev-button').click() },
               next: { text: '►', click: (e) => e.currentTarget.parentElement.parentElement.querySelector('.fc-next-button').click() },
               today: { text: 'Today', click: (e) => e.currentTarget.parentElement.parentElement.querySelector('.fc-today-button').click() },
             }}
             themeSystem="standard"
-            // Inject custom CSS via sx prop on Box
           />
         </Box>
       </motion.div>
@@ -99,7 +148,6 @@ function renderEventContent(eventInfo) {
   );
 }
 
-// Inject custom styles via a styled component or global CSS
 const calendarStyles = `
   .fc .fc-toolbar-title {
     color: #E2E8F0;
@@ -147,7 +195,6 @@ const calendarStyles = `
   }
 `;
 
-// Add styles globally (you can move this to a CSS file like src/index.css)
 const styleSheet = document.createElement('style');
 styleSheet.textContent = calendarStyles;
 document.head.appendChild(styleSheet);

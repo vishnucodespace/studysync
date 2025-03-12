@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -14,6 +13,8 @@ import EventCalendar from './pages/EventCalendar';
 import JobBoard from './pages/JobBoard';
 import Search from './pages/Search';
 import Notifications from './pages/Notifications';
+import ViewProfile from './pages/ViewProfile'; // New
+import Posts from './pages/Posts'; // New
 import PrivateRoute from './components/PrivateRoute';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -128,6 +129,8 @@ function App() {
             <Route path="/jobs" element={<PrivateRoute><JobBoard /></PrivateRoute>} />
             <Route path="/search" element={<PrivateRoute><Search /></PrivateRoute>} />
             <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
+            <Route path="/view-profile/:id" element={<PrivateRoute><ViewProfile /></PrivateRoute>} /> {/* New */}
+            <Route path="/posts" element={<PrivateRoute><Posts /></PrivateRoute>} /> {/* New */}
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </div>

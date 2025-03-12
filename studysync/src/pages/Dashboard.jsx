@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,37 +12,85 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import SearchBar from '../components/SearchBar'; // Adjust path as necessary
+import SearchBar from '../components/SearchBar';
+import apiCall from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
+import { Logout } from '@mui/icons-material';
 
 function Dashboard() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { user, setUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const [events, setEvents] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    setPosts([
-      { id: 1, user: { name: 'John Doe' }, content: 'Excited for the upcoming fest!' },
-      { id: 2, user: { name: 'Jane Smith' }, content: 'Looking for study group members.' },
-    ]);
-    setEvents([
-      { id: 1, title: 'Tech Fest 2025', date: '2025-03-20' },
-      { id: 2, title: 'Cultural Night', date: '2025-03-25' },
-    ]);
-    setJobs([
-      { id: 1, title: 'Software Intern', company: 'TechCorp' },
-      { id: 2, title: 'Data Analyst', company: 'DataInc' },
-    ]);
-    setGroups([
-      { id: 1, name: 'CS Study Group', description: 'Computer science enthusiasts.' },
-      { id: 2, name: 'Math Club', description: 'Math lovers unite!' },
-    ]);
-  }, []);
+    const fetchData = async () => {
+      try {
+        // Fetch user profile
+        if (!user) {
+          const userData = await apiCall('/api/user/profile');
+          setUser({
+            ...userData,
+            college: userData.college || 'Karpagam College of Engineering', // Default college
+          });
+        }
+
+        // Fetch events
+        const eventsData = await apiCall('/api/events');
+        setEvents(eventsData);
+
+        // Fetch jobs
+        const jobsData = await apiCall('/api/jobs');
+        setJobs(jobsData);
+
+        // Fetch groups
+        const groupsData = await apiCall('/api/groups');
+        setGroups(groupsData);
+
+        // Posts remain mock since no endpoint exists
+        setPosts([
+          { id: 1, user: { name: 'John Doe' }, content: 'Excited for the upcoming fest!' },
+          { id: 2, user: { name: 'Jane Smith' }, content: 'Looking for study group members.' },
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+        // Fallback to mock data
+        setUser({
+          name: 'John Doe',
+          college: 'Karpagam College of Engineering', // Fallback college
+        });
+        setPosts([
+          { id: 1, user: { name: 'John Doe' }, content: 'Excited for the upcoming fest!' },
+          { id: 2, user: { name: 'Jane Smith' }, content: 'Looking for study group members.' },
+        ]);
+        setEvents([
+          { id: 1, title: 'Tech Fest 2025', date: '2025-03-20' },
+          { id: 2, title: 'Cultural Night', date: '2025-03-25' },
+        ]);
+        setJobs([
+          { id: 1, title: 'Software Intern', company: 'TechCorp' },
+          { id: 2, title: 'Data Analyst', company: 'DataInc' },
+        ]);
+        setGroups([
+          { id: 1, name: 'CS Study Group', description: 'Computer science enthusiasts.' },
+          { id: 2, name: 'Math Club', description: 'Math lovers unite!' },
+        ]);
+      }
+    };
+    fetchData();
+  }, [user, setUser]);
 
   const handleSearch = (query) => {
     navigate(`/search?query=${encodeURIComponent(query)}`);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/login');
   };
 
   return (
@@ -77,10 +124,10 @@ function Dashboard() {
                   }}
                 />
                 <Typography variant="h6" sx={{ color: '#FFFFFF' }}>
-                  John Doe
+                  {user?.name || 'John Doe'}
                 </Typography>
                 <Typography variant="body2" sx={{ color: '#E2E8F0' }}>
-                  XYZ University
+                  {user?.college || 'Karpagam College of Engineering'}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -90,6 +137,14 @@ function Dashboard() {
                   to="/profile"
                 >
                   View Profile
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  sx={{ mt: 2, borderColor: '#FFFFFF', color: '#FFFFFF' }}
+                  onClick={handleLogout}
+                >
+                  <Logout sx={{ mr: 1 }} /> Logout
                 </Button>
               </CardContent>
             </Card>
